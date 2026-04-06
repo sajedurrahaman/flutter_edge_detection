@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <SurfaceView
+        android:id="@+id/surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.jayfinava.flutteredgedetection.view.PaperRectangle
+        android:id="@+id/paper_rect"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorTransparent" />
+
+    <!-- Top bar: Close (X) | Auto + toggle | Flash -->
+    <LinearLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/black"
+        android:paddingStart="16dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:fitsSystemWindows="true">
+
+        <!-- Close / Exit (X) -->
+        <ImageView
+            android:id="@+id/btn_close"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:contentDescription="Close"
+            app:srcCompat="@drawable/ic_close_24"
+            app:tint="@android:color/white" />
+
+        <!--
+            Auto / Manual capture – the entire LinearLayout is the tap target.
+            Children have clickable=false so touches bubble up to this parent.
+        -->
+        <LinearLayout
+            android:id="@+id/auto_manual_switch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/auto_manual_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Manual"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:clickable="false"
+                android:focusable="false" />
+
+            <ImageView
+                android:id="@+id/auto_capture_switch"
+                android:layout_width="16dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="6dp"
+                android:src="@drawable/auto_off"
+                android:clickable="false"
+                android:focusable="false"
+                app:tint="@android:color/white"
+                android:contentDescription="Auto Capture Toggle" />
+
+        </LinearLayout>
+
+        
+
+        <!-- Flash (far right) -->
+        <ImageView
+            android:id="@+id/flash"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:contentDescription="Flash"
+            app:srcCompat="@drawable/flash_off"
+            app:tint="@android:color/white" />
+    </LinearLayout>
+
+
+
+    <!-- Bottom bar (initial): Import Image | Shutter | Import File -->
+    <LinearLayout
+        android:id="@+id/bottom_bar_initial"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/black"
+        android:paddingTop="0dp"
+        android:paddingBottom="18dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <!-- Mode strip inside bottom bar -->
+        <HorizontalScrollView
+            android:id="@+id/mode_strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:scrollbars="none"
+            android:clipToPadding="false"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <LinearLayout
+                android:id="@+id/mode_strip_inner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/mode_documents"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Document"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="20dp" />
+
+                <TextView
+                    android:id="@+id/mode_books"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Book"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="25dp" />
+
+                <TextView
+                    android:id="@+id/mode_qrcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="QR Code"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp" />
+
+                <TextView
+                    android:id="@+id/mode_barcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bar Code"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="10dp" />
+
+                <TextView
+                    android:id="@+id/mode_idcard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Card Scan"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+
+                <TextView
+                    android:id="@+id/mode_passport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Passport"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+
+                <TextView
+                    android:id="@+id/mode_visitingcard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Visiting Card"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+
+                <TextView
+                    android:id="@+id/mode_area"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Area"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Fixed center indicator arrow -->
+        <View
+            android:id="@+id/fixed_indicator"
+            android:layout_width="15dp"
+            android:layout_height="7dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="-2dp"
+            android:background="@drawable/selector_triangle_red" />
+
+        <!-- Import Image | Shutter | Import File row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="0dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Import Image (left) -->
+            <LinearLayout
+                android:id="@+id/btn_import_image"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingStart="0dp"
+                android:paddingEnd="30dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:contentDescription="Import Image"
+                    app:srcCompat="@drawable/import_image"
+                    app:tint="@android:color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Import Image"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Shutter (center) -->
+            <ImageView
+                android:id="@+id/shut"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/shut_button"
+                app:tint="@android:color/white" />
+
+            <!-- Import File (right) -->
+            <LinearLayout
+                android:id="@+id/btn_import_file"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingStart="30dp"
+                android:paddingEnd="0dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:contentDescription="Import File"
+                    app:srcCompat="@drawable/import_file"
+                    app:tint="@android:color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Import File"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+    <!-- Bottom bar (after capture/import): Undo | Shutter | Thumbnail+badge -->
+    <LinearLayout
+            android:id="@+id/bottom_bar_after"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/black"
+            android:orientation="vertical"
+            android:clipChildren="false"
+            android:visibility="gone">
+
+        <!-- Done button row (top-right) -->
+        <TextView
+            android:id="@+id/btn_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="12dp"
+            android:paddingStart="6dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="10dp"
+            android:text="Done"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <!-- Horizontal row: Undo | Shutter | Thumbnail+badge -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="20dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="24dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <!-- Undo (left) -->
+                <ImageView
+                    android:id="@+id/btn_undo"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Undo"
+                    app:srcCompat="@drawable/undo"
+                    app:tint="@android:color/white" />
+
+                <!-- Spacer to push shutter to center -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <!-- Shutter (center) -->
+                <ImageView
+                    android:id="@+id/shut_after"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/shut_button"
+                    app:tint="@android:color/white" />
+
+                <!-- Spacer -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <!-- Thumbnail (right) with count badge -->
+                <FrameLayout
+                    android:id="@+id/thumb_container"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:background="@drawable/thumb_rounded_clip"
+                    android:clipToOutline="true">
+
+                    <!-- Red border wrapper -->
+                    <FrameLayout
+                        android:layout_width="46dp"
+                        android:layout_height="46dp"
+                        android:layout_gravity="center"
+                        android:padding="2dp"
+                        android:background="@drawable/thumb_red_border_bg">
+
+                        <ImageView
+                            android:id="@+id/thumb_preview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:background="@drawable/thumb_rounded_clip"
+                            android:clipToOutline="true"
+                            android:contentDescription="Last captured thumbnail" />
+                    </FrameLayout>
+
+                    <!-- Badge (positioned outside at top-right corner) -->
+                    <TextView
+                        android:id="@+id/import_badge"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="top|end"
+                        android:background="@drawable/badge_background"
+                        android:gravity="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+                </FrameLayout>
+            </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
