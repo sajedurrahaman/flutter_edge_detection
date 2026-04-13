@@ -103,7 +103,7 @@ class ScanActivity : BaseActivity(), IScanView.Proxy {
         val hasFlash = baseContext.packageManager
             .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
 
-        flashView.visibility = if (hasFlash) View.VISIBLE else View.GONE
+        flashView.visibility = View.VISIBLE
 
         // Set initial icon to flash-off state
         isFlashOn = false
