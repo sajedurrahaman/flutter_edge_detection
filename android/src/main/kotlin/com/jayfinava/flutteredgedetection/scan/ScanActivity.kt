@@ -3,6 +3,8 @@ package com.jayfinava.flutteredgedetection.scan
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
@@ -100,16 +102,22 @@ class ScanActivity : BaseActivity(), IScanView.Proxy {
 
         // ── Flash button ──────────────────────────────────────────────────────
         val flashView = findViewById<ImageView>(R.id.flash)
-        val hasFlash = baseContext.packageManager
-            .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
-
-        flashView.visibility = if (hasFlash) View.VISIBLE else View.GONE
+        val hasFlash = hasTorchCapability()
+        flashView.visibility = View.VISIBLE
+        flashView.isEnabled = hasFlash
+        flashView.isClickable = hasFlash
 
         // Set initial icon to flash-off state
         isFlashOn = false
-        applyFlashState(flashView)
+        if (hasFlash) {
+            applyFlashState(flashView)
+        } else {
+            flashView.setImageResource(R.drawable.flash_off)
+            flashView.alpha = 0.35f
+        }
 
         flashView.setOnClickListener {
+            if (!hasFlash) return@setOnClickListener
             isFlashOn = !isFlashOn
             applyFlashState(flashView)
             mPresenter.toggleFlash()
@@ -400,6 +408,18 @@ class ScanActivity : BaseActivity(), IScanView.Proxy {
         } else {
             flashView.setImageResource(R.drawable.flash_off)
             flashView.alpha = 0.5f          // dimmed — flash is off
+        }
+    }
+
+    private fun hasTorchCapability(): Boolean {
+        return try {
+            val cameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
+            cameraManager.cameraIdList.any { cameraId ->
+                val chars = cameraManager.getCameraCharacteristics(cameraId)
+                chars.get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
+            }
+        } catch (_: Exception) {
+            baseContext.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
         }
     }
 
