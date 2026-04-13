@@ -8,7 +8,6 @@ import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.YuvImage
 import android.hardware.Camera
-import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.hardware.camera2.params.StreamConfigurationMap
@@ -191,15 +190,28 @@ class ScanPresenter constructor(
 
     fun toggleFlash() {
         try {
+            val camera = mCamera ?: return
+            val parameters = camera.parameters ?: return
+            val supportedModes = parameters.supportedFlashModes ?: emptyList()
+            val canTorch = supportedModes.contains(Camera.Parameters.FLASH_MODE_TORCH)
+            val canOff = supportedModes.contains(Camera.Parameters.FLASH_MODE_OFF)
+            if (!canTorch || !canOff) {
+                Log.w(TAG, "toggleFlash: torch/off mode not supported on this device")
+                return
+            }
+
             flashEnabled = !flashEnabled
-            val parameters = mCamera?.parameters
-            parameters?.flashMode =
-                if (flashEnabled) Camera.Parameters.FLASH_MODE_TORCH
-                else              Camera.Parameters.FLASH_MODE_OFF
-            mCamera?.parameters = parameters
+            parameters.flashMode = if (flashEnabled) {
+                Camera.Parameters.FLASH_MODE_TORCH
+            } else {
+                Camera.Parameters.FLASH_MODE_OFF
+            }
+
+            camera.parameters = parameters
             mCamera?.startPreview()
-        } catch (e: CameraAccessException) {
-            e.printStackTrace()
+        } catch (e: RuntimeException) {
+            Log.e(TAG, "toggleFlash failed: ${e.message}", e)
+            flashEnabled = false
         }
     }
 
