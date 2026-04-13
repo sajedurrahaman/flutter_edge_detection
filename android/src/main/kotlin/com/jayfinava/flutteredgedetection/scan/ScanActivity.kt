@@ -1,11 +1,14 @@
 package com.jayfinava.flutteredgedetection.scan
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -100,10 +103,9 @@ class ScanActivity : BaseActivity(), IScanView.Proxy {
 
         // ── Flash button ──────────────────────────────────────────────────────
         val flashView = findViewById<ImageView>(R.id.flash)
-        val hasFlash = baseContext.packageManager
-            .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
+        val hasFlash = hasTorchSupport()
 
-        flashView.visibility = View.VISIBLE
+        flashView.visibility = if (hasFlash) View.VISIBLE else View.GONE
 
         // Set initial icon to flash-off state
         isFlashOn = false
@@ -212,6 +214,27 @@ class ScanActivity : BaseActivity(), IScanView.Proxy {
         }
 
         updateUiState()
+    }
+
+    /**
+     * Returns true when the device can drive a rear-camera torch.
+     * Uses Camera2 characteristics first (reliable on Android 14+) and
+     * falls back to package feature detection for older/limited devices.
+     */
+    private fun hasTorchSupport(): Boolean {
+        return try {
+            val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+            cameraManager.cameraIdList.any { cameraId ->
+                val characteristics = cameraManager.getCameraCharacteristics(cameraId)
+                val hasFlashUnit = characteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
+                val isBackCamera =
+                    characteristics.get(CameraCharacteristics.LENS_FACING) == CameraCharacteristics.LENS_FACING_BACK
+                hasFlashUnit && isBackCamera
+            }
+        } catch (_: Exception) {
+            // Fallback if camera characteristics are unavailable.
+            packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
+        }
     }
 
     private fun setupModeStrip() {
