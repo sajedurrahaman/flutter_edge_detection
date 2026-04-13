@@ -101,7 +101,6 @@ class ScanActivity : BaseActivity(), IScanView.Proxy {
         // ── Flash button ──────────────────────────────────────────────────────
         val flashView = findViewById<ImageView>(R.id.flash)
         val hasFlash = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU &&
                 baseContext.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
 
         flashView.visibility = if (hasFlash) View.VISIBLE else View.GONE
