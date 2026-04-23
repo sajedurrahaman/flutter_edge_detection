@@ -51,13 +51,14 @@
         -->
         <LinearLayout
             android:id="@+id/auto_manual_switch"
-            android:layout_width="70dp"
+            android:layout_width="44dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
             android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:focusable="false"
+            android:background="@null"
+            android:foreground="@null"
             android:padding="8dp">
 
             <TextView
