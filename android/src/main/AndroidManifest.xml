@@ -18,11 +18,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".scan.ScanActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".crop.CropActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
     </application>
 

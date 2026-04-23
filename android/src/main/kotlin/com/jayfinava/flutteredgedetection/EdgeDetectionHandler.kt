@@ -89,7 +89,7 @@ class EdgeDetectionHandler : MethodCallHandler, PluginRegistry.ActivityResultLis
                     // Check if this is from gallery selection
                     if (data?.data != null && methodCall?.method == "edge_detect_gallery") {
                         // Launch ScanActivity with the selected image
-                        val scanIntent = Intent(getActivity()?.applicationContext, com.jayfinava.flutteredgedetection.scan.ScanActivity::class.java)
+                        val scanIntent = Intent(getActivity(), com.jayfinava.flutteredgedetection.scan.ScanActivity::class.java)
                         val bundle = Bundle().apply {
                             putString(SAVE_TO, methodCall?.argument<String>(SAVE_TO))
                             putString(CROP_TITLE, methodCall?.argument<String>(CROP_TITLE))
@@ -123,7 +123,7 @@ class EdgeDetectionHandler : MethodCallHandler, PluginRegistry.ActivityResultLis
             return
         }
 
-        val initialIntent = Intent(getActivity()?.applicationContext, ScanActivity::class.java)
+        val initialIntent = Intent(getActivity(), ScanActivity::class.java)
 
         val bundle = Bundle().apply {
             putString(SAVE_TO, call.argument<String>(SAVE_TO))
