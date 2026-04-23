@@ -51,7 +51,7 @@
         -->
         <LinearLayout
             android:id="@+id/auto_manual_switch"
-            android:layout_width="44dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
@@ -63,7 +63,7 @@
 
             <TextView
                 android:id="@+id/auto_manual_label"
-                android:layout_width="wrap_content"
+                android:layout_width="44dp"
                 android:layout_height="wrap_content"
                 android:text="Manual"
                 android:textColor="@android:color/white"
