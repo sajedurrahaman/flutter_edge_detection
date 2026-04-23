@@ -40,15 +40,19 @@
             app:srcCompat="@drawable/ic_close_24"
             app:tint="@android:color/white" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <!--
             Auto / Manual capture – the entire LinearLayout is the tap target.
             Children have clickable=false so touches bubble up to this parent.
         -->
         <LinearLayout
             android:id="@+id/auto_manual_switch"
-            android:layout_width="0dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal"
             android:clickable="true"
@@ -79,7 +83,10 @@
 
         </LinearLayout>
 
-        
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <!-- Flash (far right) -->
         <ImageView
