@@ -1,0 +1,11 @@
+/build
+.dart_tool
+.packages
+.pub
+.pub-cache
+
+example/build
+example/.dart_tool
+example/.gradle
+example/android/.gradle
+example/android/app/build
