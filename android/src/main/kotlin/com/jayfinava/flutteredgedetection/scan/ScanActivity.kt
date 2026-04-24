@@ -81,7 +81,7 @@ class ScanActivity : BaseActivity(), IScanView.Proxy {
         val initialTopPadding = topBar.paddingTop
         ViewCompat.setOnApplyWindowInsetsListener(topBar) { v, insets ->
             val topInset = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
-            v.setPadding(v.paddingLeft, initialTopPadding + 42, v.paddingRight, v.paddingBottom - 4)
+            v.setPadding(v.paddingLeft, initialTopPadding + 46, v.paddingRight, v.paddingBottom - 10)
             insets
         }
 

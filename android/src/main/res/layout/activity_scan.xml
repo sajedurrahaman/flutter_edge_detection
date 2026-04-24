@@ -63,7 +63,7 @@
 
             <TextView
                 android:id="@+id/auto_manual_label"
-                android:layout_width="14dp"
+                android:layout_width="48dp"
                 android:layout_height="wrap_content"
                 android:text="Manual"
                 android:textColor="@android:color/white"
@@ -121,7 +121,7 @@
             android:id="@+id/mode_strip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorTransparent"
             android:scrollbars="none"
             android:clipToPadding="false"
             android:paddingTop="10dp"
@@ -132,6 +132,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:background="@color/colorTransparent"
                 android:gravity="center">
 
                 <TextView

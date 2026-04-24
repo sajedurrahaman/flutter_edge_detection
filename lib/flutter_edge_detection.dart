@@ -2,7 +2,8 @@
 /// with advanced image processing capabilities.
 library flutter_edge_detection;
 
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart'
+    show MethodChannel, PlatformException;
 
 /// Provides static methods for performing edge detection and document scanning.
 ///
